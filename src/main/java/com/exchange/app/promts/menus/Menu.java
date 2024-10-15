@@ -19,7 +19,7 @@ public abstract class Menu {
     protected void setTitle(){
         String title = """
                 ============================================
-                Seleccione una opción una opción
+                Seleccione una opción
                 ============================================
                 """;
 

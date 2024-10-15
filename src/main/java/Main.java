@@ -112,17 +112,7 @@ public class Main {
         int out = 0;
         CurrencyConversor result;
         SearchPair searchPair = new SearchPair();
-
-        if (AnsiSupport.checkAnsiSupport()) {
-            menu1 = new InteractiveMenu(currencyOptions1, "Que moneda desea convertir: ");
-            menu2 = new InteractiveMenu();
-            continuityChecker = new keyChecker();
-        } else {
-            menu1 = new BasicMenu(currencyOptions1, "Que moneda desea convertir: ");
-            menu2 = new BasicMenu();
-            continuityChecker = new TextChecker();
-        }
-
+        
         do {
             List<String> currencyOptions2List = new ArrayList<>();
 
