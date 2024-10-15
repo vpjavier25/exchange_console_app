@@ -112,7 +112,7 @@ public class Main {
         int out = 0;
         CurrencyConversor result;
         SearchPair searchPair = new SearchPair();
-        
+
         do {
             List<String> currencyOptions2List = new ArrayList<>();
 
