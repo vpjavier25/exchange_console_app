@@ -4,7 +4,9 @@
 
 Aplicación de consola con funcionalidad para convertir diferentes divisas. Se hace uso de la api [ExchangeRate-API](https://www.exchangerate-api.com/)
 
-##Visualización en consolas que soportan ANSI
+## Visualización en consolas que soportan ANSI
+![Menu principal](/src/assets/mainMenu)
+
 
 ## Funcionalidades del proyecto
 
