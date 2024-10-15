@@ -5,8 +5,35 @@
 Aplicación de consola con funcionalidad para convertir diferentes divisas. Se hace uso de la api [ExchangeRate-API](https://www.exchangerate-api.com/)
 
 ## Visualización en consolas que soportan ANSI
-![Menu principal](/src/assets/mainMenu)
 
+<div style="display: flex; gap: 10px;">
+    <div>
+        <img src="/src/assests/mainMenu.png" alt="Menu principal" width: 10%">
+    </div>
+    <div>
+        <img src="/src/assests/convertMenu.png" alt="Menu para seleccionar moneda">
+    </div>
+    <div>
+        <img src="/src/assests/input.png" alt="input">
+    </div>
+    <div>
+        <img src="/src/assests/result.png" alt="vista de resultado">
+    </div>
+</div>
+
+## Visualización en consolas simples
+
+<div style="display: flex; gap: 10px;">
+    <div>
+        <img src="/src/assests/basicMain.png" alt="Menu principal" width: 10%">
+    </div>
+    <div>
+        <img src="/src/assests/basicConvertMenu.png" alt="Menu para seleccionar moneda">
+    </div>
+    <div>
+        <img src="/src/assests/basicResult.png" alt="vista de resultado">
+    </div>
+</div>
 
 ## Funcionalidades del proyecto
 
