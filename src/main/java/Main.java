@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.*;
 
 import com.exchange.app.models.CurrencyConversor;
@@ -44,7 +45,8 @@ public class Main {
     };
 
     public static void main(String[] args) {
-        int option;
+
+        int option = -1;
         Menu mainMenu;
         Menu menu1;
         Menu menu2;
@@ -61,45 +63,53 @@ public class Main {
             mainMenu = new BasicMenu(mainMenuOptions, "Que desea hacer");
         }
 
-        try {
-            do {
+        do {
+            try {
                 option = mainMenu.display();
+
                 switch (option) {
                     case 0:
+
                         option = excuteCurrencyConversion(menu1, menu2, continuityChecker);
+
                         break;
                     case 1:
-                        SearchPair searchPair = new SearchPair();
-                        List<String> history = searchPair.readHistory();
-                        System.out.println("\nUltimas diez conversiones realizadas:\n");
-                        for (int i = 0; i < history.size(); i++) {
-                            System.out.println(Ansi.ansi().fgGreen().a(i+1 + ". ").reset().toString() + history.get(i));
-                        }
 
+                        executeHistory();
                         option = continuityChecker.stop();
                         break;
                     case 2:
+                    case -1:
                         option = -1;
                         break;
                 }
-            } while (option != -1);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            } catch (RuntimeException | IOException | URISyntaxException | InterruptedException e) {
+                System.out.println(e.getMessage());
+                try {
+                    option = continuityChecker.stop();
+                } catch (IOException e1) {
+                    option = -1;
+                }
+            }
+        } while (option != -1);
+
+    }
+
+    public static void executeHistory() throws IOException {
+        SearchPair searchPair = new SearchPair();
+        List<String> history = searchPair.readHistory();
+        System.out.println("\nUltimas diez conversiones realizadas:\n");
+        for (int i = 0; i < history.size(); i++) {
+            System.out.println(Ansi.ansi().fgGreen().a(i + 1 + ". ").reset().toString() + history.get(i));
         }
     }
 
-    public static void excuteHistory() {
-
-    }
-
-    public static int excuteCurrencyConversion(Menu menu1, Menu menu2, ContinuityChecker continuityChecker) {
+    public static int excuteCurrencyConversion(Menu menu1, Menu menu2, ContinuityChecker continuityChecker)
+            throws RuntimeException, IOException, URISyntaxException, InterruptedException {
         addCurrencies();
         int selectedOption1 = 0;
         int selectedOption2 = 0;
         int out = 0;
-        String amount = "";
         CurrencyConversor result;
         SearchPair searchPair = new SearchPair();
 
@@ -112,52 +122,50 @@ public class Main {
             menu2 = new BasicMenu();
             continuityChecker = new TextChecker();
         }
-        try {
-            do {
-                List<String> currencyOptions2List = new ArrayList<>();
 
-                selectedOption1 = menu1.display();
+        do {
+            List<String> currencyOptions2List = new ArrayList<>();
 
-                if (selectedOption1 == -1) {
-                    break;
-                }
-                for (int i = 0; i < currencyOptions1.length - 1; i++) {
-                    if (selectedOption1 != i) {
-                        currencyOptions2List.add(currencyOptions1[i]);
-                    }
-                }
-                currencyOptions2List.add("Atras");
-                String[] currencyOptions2 = currencyOptions2List.toArray(new String[0]);
+            selectedOption1 = menu1.display();
 
-                menu2.setOptions(currencyOptions2);
-                menu2.setQuestion("A que moneda desea convertir: ");
-                selectedOption2 = menu2.display();
-
-                if (selectedOption2 == -1) {
-                    continue;
-                }
-                TextInput input = new TextInput("Convertir " +
-                        currencyOptions1[selectedOption1] +
-                        " a " +
-                        currencyOptions2[selectedOption2] + ": "
-                );
-                Screen.cleanScreen();
-                result = searchPair.search(
-                        currencies.get(currencyOptions1[selectedOption1]),
-                        currencies.get(currencyOptions2[selectedOption2]),
-                        input
-                );
-
-                System.out.println(Formatter.formatConversionInfo(result));
-
-                out = continuityChecker.stop();
+            if (selectedOption1 == -1) {
                 break;
+            }
+            for (int i = 0; i < currencyOptions1.length - 1; i++) {
+                if (selectedOption1 != i) {
+                    currencyOptions2List.add(currencyOptions1[i]);
+                }
+            }
+            currencyOptions2List.add("Atras");
+            String[] currencyOptions2 = currencyOptions2List.toArray(new String[0]);
 
-            } while (true);
+            menu2.setOptions(currencyOptions2);
+            menu2.setQuestion("A que moneda desea convertir: ");
+            selectedOption2 = menu2.display();
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+            if (selectedOption2 == -1) {
+                continue;
+            }
+            TextInput input = new TextInput("Convertir " +
+                    currencyOptions1[selectedOption1] +
+                    " a " +
+                    currencyOptions2[selectedOption2] + ": "
+            );
+            Screen.cleanScreen();
+            result = searchPair.search(
+                    currencies.get(currencyOptions1[selectedOption1]),
+                    currencies.get(currencyOptions2[selectedOption2]),
+                    input
+            );
+
+            System.out.println(Formatter.formatConversionInfo(result));
+
+            out = continuityChecker.stop();
+            break;
+
+        } while (true);
+
+
         return out;
     }
 
@@ -185,6 +193,5 @@ public class Main {
         currencies.put("Peso uruguayo", "UYU");
 
     }
-
 
 }

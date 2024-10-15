@@ -9,13 +9,15 @@ public class CurrencyConversor {
     private String targetCurrency;
     private String conversionRate;
     private String conversionResult;
+    private String conversionDate;
 
     public CurrencyConversor(){
 
     }
 
-    public CurrencyConversor(String amount, CurrencyConversorDto cc){
+    public CurrencyConversor(String amount, String conversionDate, CurrencyConversorDto cc){
         this.amount = Formatter.formatNumber(Double.parseDouble(amount));
+        this.conversionDate = conversionDate;
         this.baseCurrency = cc.base_code();
         this.targetCurrency = cc.target_code();
         this.conversionRate = Formatter.formatNumber(cc.conversion_rate());
@@ -42,8 +44,9 @@ public class CurrencyConversor {
     @Override
     public String toString() {
         return baseCurrency + " a " + targetCurrency
-                + " || "+"Cantidad a convertir: "+ amount
-                + " || " +"Tasa: "+ conversionRate
-                + " || " +"Conversion: " +conversionResult;
+                + " | "+"Cantidad a convertir: "+ amount
+                + " | " +"Tasa: "+ conversionRate
+                + " | " +"Conversion: " +conversionResult
+                + " | " + "Fecha de conversión: "+conversionDate;
     }
 }

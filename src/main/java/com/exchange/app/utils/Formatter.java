@@ -4,6 +4,8 @@ import com.exchange.app.models.CurrencyConversor;
 import org.fusesource.jansi.Ansi;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Formatter {
     public static String formatNumber(double value) {
@@ -24,5 +26,10 @@ public class Formatter {
                 + "Taza de conversión: " + conversor.getConversionRate() + salto
                 + "Conversión: " + conversor.getConversionResult();
 
+    }
+
+    public static String formatDate(Date date){
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy:HH:mm:ss");
+        return df.format(date);
     }
 }

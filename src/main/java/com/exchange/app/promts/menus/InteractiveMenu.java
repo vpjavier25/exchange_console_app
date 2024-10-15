@@ -23,7 +23,6 @@ public class InteractiveMenu extends Menu {
     @Override
     public int display() throws IOException {
         Screen.cleanScreen();
-        System.out.print("\u001B[?25l");
         int selection = 0;
         try (Terminal term = TerminalBuilder.builder().system(true).build()) {
             term.enterRawMode();
@@ -34,7 +33,7 @@ public class InteractiveMenu extends Menu {
             keyMap.setAmbiguousTimeout(500);
             keyMap.bind("up", "\u001b[A");
             keyMap.bind("down", "\u001b[B");
-            keyMap.bind("exit", KeyMap.ctrl('c'));
+            keyMap.bind("exit", KeyMap.esc());
             keyMap.bind("enter", "\r");
 
             super.setTitle();
@@ -67,10 +66,8 @@ public class InteractiveMenu extends Menu {
                         }
                         break;
                     case "enter":
-                        System.out.print("\u001B[?25h");
                         return selection == options.length - 1 ? -1 : selection;
                     case "exit":
-                        System.out.print("\u001B[?25h");
                         return -1;
                 }
                 printUp(writer, "   ", options.length  - prevSelection, false);

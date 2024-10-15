@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 
 public class keyChecker implements ContinuityChecker {
     @Override
-    public int stop() throws Exception {
+    public int stop() throws IOException {
         try (Terminal term = TerminalBuilder.builder().system(true).build()) {
             term.enterRawMode();
             PrintWriter writer = term.writer();

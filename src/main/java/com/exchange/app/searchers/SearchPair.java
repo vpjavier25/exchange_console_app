@@ -7,11 +7,13 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.exchange.app.dtos.CurrencyConversorDto;
 import com.exchange.app.models.CurrencyConversor;
 import com.exchange.app.promts.inputs.TextInput;
+import com.exchange.app.utils.Formatter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,6 +27,7 @@ public class SearchPair {
         //verificamos que se pueda convertir a double para verificar el formato
         //el formato que recibe la api es un String xxxx.xxxxx
         String amount;
+        Date date = new Date();
         do{
             amount = input.execute();
             if(!isNumber(amount)){
@@ -38,10 +41,13 @@ public class SearchPair {
         HttpRequest request = HttpRequest.newBuilder().uri(uri).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         Gson gson = new Gson();
+        if(!response.body().contains("success")){
+            throw new RuntimeException("Existe un problema con el servidor, si el problema persiste contacte con el administrador");
+        }
         CurrencyConversorDto resultado = gson.fromJson(response.body(), CurrencyConversorDto.class);
-        CurrencyConversor currencyConversor = new CurrencyConversor(amount, resultado);
+        CurrencyConversor currencyConversor = new CurrencyConversor(amount, Formatter.formatDate(date), resultado);
         addToHistory(currencyConversor);
-
+        client.close();
         return currencyConversor;
     }
 
