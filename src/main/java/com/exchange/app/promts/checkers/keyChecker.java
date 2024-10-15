@@ -20,18 +20,23 @@ public class keyChecker implements ContinuityChecker {
 
             writer.println(Ansi.ansi().fgGreen().a("? ").reset().toString() + "Presiona "
                     + Ansi.ansi().fgGreen().a("ENTER").reset().toString() + " para seguir");
+            writer.println(Ansi.ansi().fgGreen().a("? ").reset().toString() + "Presiona "
+                    + Ansi.ansi().fgRed().a("ESC").reset().toString() + " para salir");
 
 
             writer.flush();
             KeyMap<String> keyMap = new KeyMap<>();
             keyMap.bind("enter", "\r");
-            keyMap.bind("exit", KeyMap.ctrl('c'));
+            keyMap.bind("exit", KeyMap.esc());
             BindingReader bindingReader = new BindingReader(term.reader());
 
             while (true) {
                 String key = bindingReader.readBinding(keyMap);
                 if (key.equals("enter"))
                     return 0;
+                else if(key.equals("exit")){
+                    return -1;
+                }
             }
 
         } catch (IOException e) {
